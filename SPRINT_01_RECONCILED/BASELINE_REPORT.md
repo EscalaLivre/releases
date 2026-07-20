@@ -16,9 +16,9 @@ This report consolidates the baseline state of the Escala+ platform across all r
 | Total Repositories | 11 |
 | On-disk Repos | 6 (55%) |
 | Missing from Disk | 5 (activation-registry, releases, server, connect, mobile) |
-| Database Tables | 23 (15 backend + 8 manager) |
-| API Endpoints | 48 (backend) |
-| IPC Channels | 65 (27 desktop + 38 manager) |
+| Database Tables | 26 (18 backend + 8 manager) |
+| API Endpoints | 68 (backend) |
+| IPC Channels | 72 (27 desktop + 45 manager) |
 | Contract Types | 15 (canonical) |
 | Duplicate Type Definitions | 10+ (across frontend & manager) |
 | SHA Consistency | ✅ All on-disk repos consistent across remotes |

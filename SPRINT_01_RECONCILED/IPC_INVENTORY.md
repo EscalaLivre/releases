@@ -7,10 +7,12 @@
 
 ## Overview
 
-| Service | Total Channels | Direction | Security Model |
-|---------|---------------|-----------|----------------|
-| **Desktop (EscalaDesktop)** | 27 | Main ↔ Renderer | Bridge Token |
-| **Activation Manager** | 38 | Main ↔ Renderer | Internal IPC |
+| Metric | Value |
+|---|---|
+| Desktop IPC channels | 27 (25 handle + 2 push) |
+| Activation Manager IPC channels | 45 |
+| **Total** | **72** |
+
 
 ---
 

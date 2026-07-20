@@ -182,12 +182,13 @@
 
 | Endpoint Group | Total Endpoints | In OpenAPI | Coverage |
 |----------------|----------------|------------|----------|
-| Technical Admin | 8 | 8 | 100% |
-| GitHub Config | 4 | 4 | 100% |
-| All other controllers | 36 | 0 | 0% |
-| **Total** | **48** | **12** | **25%** |
+| Admin + Technical + GitHub | 22 | 13 | 59% |
+| Auth + Activation | 12 | 0 | 0% |
+| Business (users, employees, departments, schedules) | 27 | 0 | 0% |
+| System (health, exports, imports, audit, backup) | 7 | 0 | 0% |
+| **Total** | **68** | **13** | **19%** |
 
-> The OpenAPI spec currently only covers the 13 admin/technical endpoints. The 35 regular CRUD endpoints are not documented in the spec.
+> The OpenAPI spec currently only covers the 13 admin/technical endpoints (Dashboard, Activation, ClientAdmin, Diagnostics, Audit, Support, Backup). The remaining 55 endpoints (auth, business CRUD, system) have no OpenAPI contract documentation.
 
 ---
 
@@ -206,16 +207,58 @@
 
 ---
 
+## Contract Classification (Sprint 1 Gate)
+
+| Contrato | Classificacao | Evidencia |
+|---|---|---|
+| GET /api/system/health | **MISSING** | Backend tem /api/health — path diferente, fora do OpenAPI |
+| GET /api/system/version | **MISSING** | Nao existe no backend nem no OpenAPI |
+| GET /api/system/compatibility | **MISSING** | Nao existe |
+| POST /api/auth/login | **DEFINED_FOR_FUTURE** | Implementado no backend, NAO documentado no OpenAPI |
+| POST /api/auth/refresh | **MISSING** | Nao existe (JWT 60min sem refresh) |
+| POST /api/auth/logout | **DEFINED_FOR_FUTURE** | Implementado no backend, NAO documentado no OpenAPI |
+| POST /api/pairing/start | **MISSING** | Nao existe |
+| POST /api/pairing/complete | **MISSING** | Nao existe |
+| POST /api/devices/revoke | **MISSING** | Nao existe |
+| GET /api/license/status | **MISSING** | Backend tem /api/activation/status — namespace diferente |
+| GET /api/backup/status | **MISSING** | Backend tem GET /api/backups (lista), sem status |
+
+### Cross-cutting contracts
+
+| Contrato | Status | Evidencia |
+|---|---|---|
+| correlationId header | **MISSING** | Nao implementado em nenhum endpoint |
+| Idempotency-Key header | **MISSING** | Nao implementado |
+| Optimistic versioning (ETag/If-Match) | **MISSING** | Nao implementado |
+| Event envelope | **MISSING** | Audit events retornados como arrays JSON simples |
+| Institution identity | **MISSING** | Nao modelado |
+| Server identity | **MISSING** | Nao modelado |
+| Device identity | **MISSING** | Apenas installationId em ActivationStatus |
+| Versioned error responses | **PARTIAL** | ErrorResponse(code, message) existe mas sem campo version |
+
+### Decisao sobre duplicacoes de tipos
+
+| Tipo | Fonte canonica | Duplicado em | Decisao |
+|---|---|---|---|
+| ActivationState | contracts/src/index.ts | frontend/desktop.ts | **Manter duplicacao temporaria** ate Sprint 3 |
+| LicensePayload | contracts/src/index.ts | frontend/desktop.ts | **Manter duplicacao temporaria** ate Sprint 3 |
+| TechnicalActivationStatus | frontend/desktop.ts | contracts chama ActivationStatus | **Renomear** no contracts para TechnicalActivationStatus |
+| ClientAdminOneTimeCredentials | frontend/desktop.ts | contracts separa em 2 tipos | **Unificar** em 1 tipo no contracts |
+| TechnicalBackupResponse | frontend/desktop.ts | Nao existe no contracts | **Adicionar** ao contracts |
+| TechnicalSupportExportResult | frontend/desktop.ts | Nao existe no contracts | **Adicionar** ao contracts |
+| ActivationManagerApi | activation-manager/contracts.ts | Unico no manager | **Extrair** tipos compartilhados para contracts |
+
 ## Key Findings
 
 | # | Finding | Severity | Impact |
 |---|---------|----------|--------|
-| 1 | Frontend duplicates 6+ types from contracts | 🔴 High | Type drift risk |
-| 2 | Activation Manager duplicates 4+ types from contracts | 🔴 High | Type drift risk |
-| 3 | Desktop has no type definitions at all | 🟡 Medium | No type safety |
-| 4 | OpenAPI only covers 25% of endpoints | 🟡 Medium | Incomplete contract |
-| 5 | Backend Java entities are manually aligned | 🟡 Medium | Manual sync required |
-| 6 | No workspace-level type sharing configured | 🔴 High | Root cause of duplication |
+| 1 | 11 contratos futuros (pairing, devices, system/*) estao MISSING — nao implementados | 🔴 High | Indicam que server/connect repos ainda nao existem |
+| 2 | OpenAPI cobre apenas 13/68 endpoints (19%) | 🔴 High | 55 endpoints sem documentacao contratual |
+| 3 | Frontend duplica 11+ tipos do contracts com nomes divergentes | 🔴 High | TechnicalActivationStatus vs ActivationStatus |
+| 4 | Cross-cutting contracts (correlationId, idempotency, versioning) estao MISSING | 🟡 Medium | Serao necessarios na arquitetura multi-instancia |
+| 5 | Desktop (plain JS) nao tem tipos | 🟡 Medium | Sem type safety no IPC bridge |
+| 6 | Backend Java entities alinhados manualmente | 🟡 Medium | Sincronizacao manual required |
+| 7 | Nenhum workspace-level type sharing configurado | 🔴 High | Root cause da duplicacao |
 
 ---
 
@@ -224,8 +267,12 @@
 | Priority | Action | Effort |
 |----------|--------|--------|
 | P0 | Add `@escalalivre/contracts` as workspace dependency in frontend & manager | Low |
-| P0 | Replace duplicate types with imports from contracts | Medium |
-| P1 | Extend OpenAPI spec to cover all 48 endpoints | Medium |
+| P0 | Replace duplicate frontend types with imports from contracts | Medium |
+| P1 | Extend OpenAPI spec to cover auth + business endpoints | Medium |
+| P1 | Implement correlationId header pattern | Medium |
 | P1 | Add Java DTO codegen from OpenAPI spec | Medium |
-| P2 | Migrate desktop to TypeScript or add JSDoc types | High |
-| P2 | Add CI check for type drift detection | Low |
+| P2 | Renomear ActivationStatus → TechnicalActivationStatus no contracts | Low |
+| P2 | Unificar tipos de resposta ClientAdmin no contracts | Low |
+| P2 | Adicionar TechnicalBackupResponse e TechnicalSupportExportResult ao contracts | Low |
+| P2 | Implementar contratos future (pairing, devices, system) quando server/connect existirem | High |
+| P3 | Migrar desktop para TypeScript | High |

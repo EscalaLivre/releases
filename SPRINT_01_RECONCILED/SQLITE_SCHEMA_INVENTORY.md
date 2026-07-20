@@ -9,7 +9,7 @@
 
 | Service | Database | Tables | Indexes | Migrations | Schema Version |
 |---------|----------|--------|---------|------------|----------------|
-| **Backend** | `escala.db` | 15 (+ 2 non-migration) | — | 8 (V1–V8) | V8 |
+| **Backend** | `escala.db` | 18 | — | 8 (V1–V8) | V8 |
 | **Activation Manager** | `activation_manager.db` | 8 | 8 | — | v4 |
 | **Activation Issuer** | (none — stateless CLI) | 0 | 0 | 0 | — |
 | **Desktop** | (none) | 0 | 0 | 0 | — |

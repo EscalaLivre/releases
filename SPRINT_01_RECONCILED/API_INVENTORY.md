@@ -9,8 +9,8 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Endpoints | 48 |
-| Controllers | 13 |
+| Total Endpoints | 68 |
+| Controllers | 15 |
 | Auth Types | Public, JWT, Bridge+Session |
 | Base Path | `/api` |
 | OpenAPI Spec | `openapi/technical-api.yaml` |

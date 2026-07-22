@@ -2,12 +2,12 @@
 
 This file is a review record template, not a pre-filled approval.
 
-Release: https://gitlab.com/jf.aschenbrenner/escalalivre-backend/-/releases/v1.0.0-qa.s2.1
+Release: https://gitlab.com/jf.aschenbrenner/escalalivre-backend/-/releases/v1.0.0-qa.s2.2
 
 Installer SHA-256:
 
 ```text
-e9e09ff8e947a41fa608a274c6da9e7fcae5e1609b285cc8df817f287d8f92db
+b1dacf62fffcbbbe5785437e2a9ef06141c6cff978ef1b9dffbc7faf6182122d
 ```
 
 Reviewer name: ______________________________

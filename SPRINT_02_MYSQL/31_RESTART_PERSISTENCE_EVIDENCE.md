@@ -30,3 +30,9 @@ FLYWAY_RESTART_INTEGRITY_PASS: PASS
 Evidence timestamp: `2026-07-22T00:55:23` local artifact name. V901 checksum observed: `-1583371606`.
 
 The operational result remains automated. `HUMAN_INSTALL_RESTART_VALIDATION: PENDING`.
+
+## Clean s2.2 Smoke
+
+The `1.0.0-qa.s2.2` installer was installed from zero named volumes, reached `UP`, stopped both QA containers, and started them again successfully. Full removal then deleted only the two QA containers, network, image, and named volumes. A second full-removal execution also passed with all resources already absent.
+
+This clean smoke did not create a signed license or the manual functional dataset. It supplements the persistence evidence above and does not change `HUMAN_INSTALL_RESTART_VALIDATION: PENDING`.

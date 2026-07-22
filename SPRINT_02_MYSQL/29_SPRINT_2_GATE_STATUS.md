@@ -13,6 +13,10 @@
 | PowerShell/Compose validation | PASS |
 | Final GitLab pipeline | PASS 5/5 |
 | Private release integrity | PASS |
+| Activation reset backup and recovery | PASS |
+| QA-only data cleanup | PASS |
+| Clean installer local smoke | PASS |
+| Remote release assets, 8/8 hashes | PASS |
 
 ## Human Gates
 
@@ -25,6 +29,8 @@
 
 ```text
 MYSQL_COMPATIBILITY_PROVEN: TECHNICALLY_PASS
+ACTIVATION_RESET_BACKUP_CREATED: PASS
+ACTIVATION_QA_DATA_RESET: PASS
 SPRINT_2_FINAL_GATE: PENDING_HUMAN_REVIEW
 READY_FOR_HUMAN_MANUAL_VALIDATION: YES
 SPRINT_3_SERVER_MINIMAL_AUTHORIZED: NO

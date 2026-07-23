@@ -1,6 +1,6 @@
 # Sprint 2 MySQL - Release Manifest
 
-Generated: `2026-07-22`
+Generated: `2026-07-23`
 
 ## Scope
 
@@ -8,11 +8,13 @@ Generated: `2026-07-22`
 - Final backend SHA: `9c7bedac1aa10430501bde51b75b2fb568df9afc`
 - GitHub `main`: same SHA
 - GitLab `main`: same SHA
-- Private QA release: `v1.0.0-qa.s2.2`
-- Release URL: https://gitlab.com/jf.aschenbrenner/escalalivre-backend/-/releases/v1.0.0-qa.s2.2
+- Initial private QA release: `v1.0.0-qa.s2.2`
+- Release URL (s2.2): https://gitlab.com/jf.aschenbrenner/escalalivre-backend/-/releases/v1.0.0-qa.s2.2
+- Hotfix private QA release: `v1.0.0-qa.s2.3`
+- Release URL (s2.3): https://gitlab.com/jf.aschenbrenner/escalalivre-backend/-/releases/v1.0.0-qa.s2.3
 - Canonical bundle source: `backend/qa-server-bundle`
 
-This directory contains exactly one numbered artifact for every identifier from `00` through `39`. The obsolete partial `qa-bundle` copy was removed; binaries, encrypted operational backups, private keys, populated environment files, and tokens are not stored in this documentation repository.
+This directory contains exactly one numbered artifact for every identifier from `00` through `40`. The obsolete partial `qa-bundle` copy was removed; binaries, encrypted operational backups, private keys, populated environment files, and tokens are not stored in this documentation repository.
 
 ## Evidence Groups
 
@@ -25,10 +27,12 @@ This directory contains exactly one numbered artifact for every identifier from 
 | 25-28 | Final issue/audit/local/E2E evidence |
 | 29-32 | Gate, final SHA/pipeline, restart, and human review |
 | 33-39 | Reset backup, cleanup, clean audit, retest, installer, activation, and final release evidence |
+| 40 | Unified Desktop + Server installer hotfix (v1.0.0-qa.s2.3) |
 
 ## Current Gates
 
 ```text
+QA-INSTALLER-CLIENT-001: PASS
 MYSQL_COMPATIBILITY_PROVEN: TECHNICALLY_PASS
 SPRINT_2_FINAL_GATE: PENDING_HUMAN_REVIEW
 HUMAN_INSTALL_RESTART_VALIDATION: PENDING

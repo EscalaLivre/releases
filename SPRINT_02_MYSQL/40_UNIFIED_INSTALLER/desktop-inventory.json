@@ -1,0 +1,50 @@
+﻿{
+    "valid":  true,
+    "entries":  [
+                    {
+                        "rel":  "Escala Livre.exe",
+                        "exists":  true,
+                        "required":  true,
+                        "size":  180844544,
+                        "sha256":  "28b9224640d762f2094ccb470da762cb5a969b1252f11a7f69a15297c166508f"
+                    },
+                    {
+                        "rel":  "resources/app.asar",
+                        "exists":  true,
+                        "required":  true,
+                        "size":  2218727,
+                        "sha256":  "7787d3a692f1729fba8fcef33c70a05856a26e025a5827ac7b27a3cc97fb38b3"
+                    },
+                    {
+                        "rel":  "resources/backend/escalalivre-backend.jar",
+                        "exists":  true,
+                        "required":  true,
+                        "size":  75556374,
+                        "sha256":  "4e3e0683e3d50e47807e2649600df496f04bcc3b7071e545ff2c4c76eeef81e3"
+                    },
+                    {
+                        "rel":  "resources/frontend/index.html",
+                        "exists":  true,
+                        "required":  true,
+                        "size":  474,
+                        "sha256":  "142f08575700c248ac755ba1166d7ba7433d278c54ba2f977c4d2eb12fb7019d"
+                    },
+                    {
+                        "rel":  "resources/release-lock.json",
+                        "exists":  true,
+                        "required":  true,
+                        "size":  1574,
+                        "sha256":  "d0d418b88aec4054384781bcee85036192d4b4d9764dcccdb33c7e08c6adb8a0"
+                    },
+                    {
+                        "rel":  "resources/config/admin-github.json",
+                        "exists":  true,
+                        "required":  true,
+                        "size":  105,
+                        "sha256":  "fee52013da816ff4a55038f1cc3eaae8186e1afedef83e6b23935c1d2ee17548"
+                    }
+                ],
+    "schemaVersion":  1,
+    "generatedAt":  "2026-07-22T23:55:03.8128132-03:00",
+    "base":  "rc11-hotfix"
+}

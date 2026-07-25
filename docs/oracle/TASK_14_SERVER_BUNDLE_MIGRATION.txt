@@ -1,0 +1,20 @@
+=== ORACLE LOG ===
+EVENT: TASK_14_SERVER_BUNDLE_MIGRATION
+DATE: 2026-07-24
+SERVER_COMMIT: 691bf84 (GitHub + GitLab)
+BACKEND_COMMIT: 28bb27e (GitHub + GitLab)
+VERDICT: PASS
+GATES_PASSED: 17/17
+CHANGES:
+  - Created server/ repository (GitHub + GitLab)
+  - Migrated 23 assets from backend/qa-server-bundle/ to server/
+  - Rewrote 12 scripts/references for Server context
+  - Removed Desktop/docker-mode references from Server scripts
+  - Updated Docker Compose project name and paths
+  - Removed qa-server-bundle/ from backend
+  - Validated Compose syntax and all PowerShell scripts
+  - Created BOUNDARIES.md, BUNDLE_LAYOUT.md, SPINT2_TECHNICAL_PROOF.md
+  - Created TASK_14_MIGRATION_MANIFEST.md + TASK_14_SERVER_BUNDLE_MIGRATION_REPORT.md
+TASK_13_SKIPPED_TEST_JUSTIFIED: added to Task 13 report
+NEXT: Task 15 not authorized. SPRINT_3_SDD requires separate review.
+=== END ORACLE ===

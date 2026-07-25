@@ -30,6 +30,7 @@
 | CLIENT_PRODUCTION_BUILD | PASS |
 | CLIENT_ONLY_INSTALLER | PASS |
 | CLIENT_CLEANUP_SECURITY | PASS |
+| TASK_13_SKIPPED_TEST_JUSTIFIED | PASS |
 
 **TASK_13_CLIENT_CLEANUP**: **PASS**
 
@@ -94,8 +95,12 @@ index.js boot flow:
 
 ### Tests
 - Before: 13 tests, 13 pass
-- After: 26 tests, 25 pass, 1 skipped (Electron runtime dependency)
+- After: 26 tests, 25 pass, 1 skipped
 - 10 new deployment-specific test cases
+- **Skipped test**: `config-loader loadConfig returns null when file does not exist`
+  - **Reason**: Requires Electron runtime (`app.getPath('userData')`)
+  - **Temporary?**: Yes — can be enabled when running inside Electron test environment
+  - **Resolution**: Electron integration test suite would cover this at a higher level
 
 ### Installer
 - `EscalaLivre-1.0.0-rc11-x64.exe` built (172 MB)

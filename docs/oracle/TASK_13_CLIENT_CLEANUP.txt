@@ -1,0 +1,20 @@
+=== ORACLE LOG ===
+EVENT: TASK_13_CLIENT_CLEANUP
+DATE: 2026-07-24
+DESKTOP_COMMIT: 739ae33
+VERDICT: PASS
+GATES_PASSED: 19/19
+CHANGES:
+  - Removed: QA Docker code (--docker-mode, awaitDockerBackend, bridge .env)
+  - Added: deployment/ module (config-loader, schema-validator, migration, controllers)
+  - Added: client-config.json with atomic write + backup + schema validation
+  - Added: RC11 -> LOCAL auto-migration
+  - Added: SERVER mode safe placeholder (no Java, no SQLite, no fallback)
+  - Added: 10 deployment unit tests (25/26 pass, 1 skip)
+  - Added: 5 docs in docs/client/
+  - Built: EscalaLivre-1.0.0-rc11-x64.exe (172 MB, Client-only)
+  - Security: clean (no regression)
+BASELINE_PRESERVED: qa-unified-installer-proof-s2.3
+NEXT: TASK_14 (Server Bundle Migration) requires separate review
+SPRINT_3_SERVER_MINIMAL_AUTHORIZED: NO
+=== END ORACLE ===

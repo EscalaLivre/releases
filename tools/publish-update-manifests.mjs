@@ -72,6 +72,7 @@ class ManifestPipeline {
     this.verifyOnly = options.verifyOnly ?? false;
     this.mock = options.mock ?? false;
     this.upload = options.upload ?? false;
+    this.skipBuild = options.skipBuild ?? false;
     this.products = options.products ?? ['client', 'server', 'activation'];
     this.githubToken = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
   }
@@ -87,10 +88,10 @@ class ManifestPipeline {
     await this.validateEnvironment();
 
     // 2. Build clean-room (se não verify-only e não dry-run)
-    if (!this.verifyOnly && !this.dryRun) {
+    if (!this.verifyOnly && !this.dryRun && !this.skipBuild) {
       await this.buildCleanRoom();
-    } else if (this.dryRun) {
-      this.log('DRY-RUN: Pulando build clean-room (usar dist existente ou mock)');
+    } else if (this.dryRun || this.skipBuild) {
+      this.log(this.skipBuild ? 'SKIP-BUILD: Pulando build clean-room (usar dist existente)' : 'DRY-RUN: Pulando build clean-room (usar dist existente ou mock)');
     }
 
     // 3. Gerar manifestos
@@ -492,7 +493,9 @@ class ManifestPipeline {
     headers['Content-Type'] = fileName.endsWith('.exe') ? 'application/octet-stream' : 'text/plain';
 
     const fileContent = readFileSync(filePath);
-    const response = await this.fetch(url, { method: 'POST', headers, body: fileContent });
+    headers['Content-Length'] = fileContent.length; // explicit length required by uploads.github.com
+    this.log(`Upload ${fileName}: ${Math.round(fileContent.length / 1024 / 1024 * 10) / 10} MB`);
+    const response = await this.fetch(url, { method: 'POST', headers, body: fileContent, timeout: 60 * 60 * 1000 /* 1h */ });
 
     if (!response.ok && response.status !== 422) { // 422 = já existe
       const err = await response.text();
@@ -501,6 +504,8 @@ class ManifestPipeline {
 
     if (response.status === 422) {
       this.logWarn(`Asset ${fileName} já existe (422), pulando.`);
+    } else {
+      this.log(`Upload ${fileName} concluído.`);
     }
   }
 
@@ -544,12 +549,15 @@ class ManifestPipeline {
 
   getAuthHeaders(isPrivate) {
     const token = isPrivate ? this.githubToken : (this.githubToken || '');
-    return token ? { Authorization: `Bearer ${token}` } : {};
+    const headers = { 'User-Agent': 'escalalivre-update-pipeline' };
+    if (token) headers.Authorization = `Bearer ${token}`;
+    return headers;
   }
 
   async fetch(url, options = {}) {
     return new Promise((resolve, reject) => {
-      const req = https.request(url, { ...options, timeout: 30000 }, (res) => {
+      const timeout = options.timeout ?? 30000;
+      const req = https.request(url, { ...options, timeout }, (res) => {
         let data = '';
         res.on('data', chunk => data += chunk);
         res.on('end', () => resolve({ ok: res.statusCode >= 200 && res.statusCode < 300, status: res.statusCode, json: () => Promise.resolve(JSON.parse(data)), text: () => Promise.resolve(data) }));
@@ -625,6 +633,7 @@ program
   .option('--server', 'Incluir Server', false)
   .option('--activation', 'Incluir Activation Manager', false)
   .option('--upload', 'Fazer upload para GitHub (requer GITHUB_TOKEN)', false)
+  .option('--skip-build', 'Pular build clean-room (reusar dist existente)', false)
   .option('--root <path>', 'Raiz do workspace (default: pai do diretório do script)', undefined)
   .parse();
 
@@ -641,6 +650,7 @@ const pipeline = new ManifestPipeline({
   channel: options.channel,
   verifyOnly: options.verifyOnly,
   upload: options.upload,
+  skipBuild: options.skipBuild,
   products,
 });
 

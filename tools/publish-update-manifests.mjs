@@ -53,7 +53,7 @@ const PRODUCTS = {
     appId: 'escalalivre-activation-manager',
     repoDir: 'activation-manager',
     packageJson: 'package.json',
-    distDir: 'dist',
+    distDir: 'release',
     assetPattern: 'EscalaLivreActivationManager-${version}-${arch}.exe',
     manifestNames: { rc: 'activation-rc.yml', stable: 'activation-stable.yml' },
     feedRepo: 'EscalaLivre/activation-manager',
@@ -199,6 +199,16 @@ class ManifestPipeline {
           .replace('${arch}', ARCH);
         assetPath = path.join(distPath, assetName);
         
+        // Nao sobrescrever artefato real existente (>200KB indica build real)
+        if (existsSync(assetPath) && statSync(assetPath).size > 200 * 1024) {
+          this.log(`Usando artefato real existente: ${assetName} (${statSync(assetPath).size} bytes)`);
+          size = statSync(assetPath).size;
+          sha256 = await this.hashFile(assetPath, 'sha256');
+          sha512 = await this.hashFile(assetPath, 'sha512');
+          if (!await this.verifyPEHeader(assetPath)) {
+            throw new Error(`Asset ${assetName} não tem header PE válido (MZ)`);
+          }
+        } else {
         // Criar arquivo mock com header MZ válido e tamanho razoável
         const mockContent = Buffer.concat([
           Buffer.from('MZ'), // PE header
@@ -211,6 +221,7 @@ class ManifestPipeline {
         sha512 = await this.hashFile(assetPath, 'sha512');
         
         this.log(`Mock asset criado: ${assetName} (${size} bytes)`);
+        }
       } else {
         // Encontrar asset no dist real
         const distPath = path.join(repoPath, product.distDir);
